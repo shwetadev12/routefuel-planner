@@ -1,0 +1,38 @@
+#  Fuel Route Optimization API (Django)
+
+##  Overview
+
+This project is a Django REST API that:
+
+- Accepts a start and end location (within USA)
+- Generates a driving route using a free routing API (OSRM)
+- Determines the most cost-effective fuel stops along the route
+- Simulates realistic fuel consumption
+- Calculates total fuel cost
+- Returns route geometry for map rendering
+
+The vehicle assumptions:
+
+- Mileage: **10 MPG**
+- Tank Capacity: **50 gallons**
+- Maximum Range: **500 miles**
+- Initial Fuel: **Full Tank (50 gallons)**
+
+The system uses a realistic fuel state simulation engine to determine optimal stops.
+
+---
+
+## Tech Stack
+
+- Python 3.8+
+- Django 4.2
+- Django REST Framework
+- OSRM (Open Source Routing Machine)
+- Nominatim (OpenStreetMap Geocoder)
+- Haversine (distance calculation)
+- Polyline (geometry decoding)
+
+---
+
+##  Project Structure
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Route Optimizer</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@mapbox/polyline/src/polyline.js"></script>
+</head>
+
+<body>
+
+<h2>Route Optimizer 🚗</h2>
+
+<button onclick="loadRoute()">Show Route</button>
+<p id="distance"></p>
+
+<div id="map" style="height:500px;"></div>
+
+<script>
+    var map = L.map('map').setView([39.5, -98.35], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    function loadRoute() {
+        fetch("/api/route/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                start: [-74.0060, 40.7128],      // New York (USA)
+                end: [-118.2437, 34.0522]        // Los Angeles (USA)
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById("distance").innerText =
+                "Distance: " + data.distance_miles + " miles";
+
+            var encoded = data.route.routes[0].geometry;
+
+            var decoded = polyline.decode(encoded);
+
+            var latlngs = decoded.map(coord => [coord[0], coord[1]]);
+
+            var routeLine = L.polyline(latlngs, {color: 'blue'}).addTo(map);
+
+            map.fitBounds(routeLine.getBounds());
+        });
+    }
+</script>
+
+</body>
+</html>
